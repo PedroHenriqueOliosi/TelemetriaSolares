@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Leitura Dos Potenciômetros</title>
+  <meta charset="UTF-8">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background-color: #111d32;
+      color: #ffffff;
+      margin: 0;
+      padding: 0;
+    }
+    
+    h1 {
+      margin-top: 140px;
+      font-size: 36px;
+      font-weight: bold;
+      text-transform: none;
+    }
+    
+    .container {
+      display: flex;
+      justify-content: space-around;
+      margin-top: 30px;
+    }
+    
+    .gauge {
+      width: 250px;
+      height: 250px;
+      display: inline-block;
+    }
+    
+    .value {
+      font-size: 28px;
+      fill: #ffffff;
+    }
+    
+    .label {
+      margin-top: 20px;
+      color: #ffffff;
+    }
+    
+    .logo {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      width: 400px;
+      height: 133px;
+    }
+    
+    .button-container {
+      margin-top: 20px;
+    }
+    
+    .update-button {
+      font-size: 18px;
+      margin-top: 10px;
+    }
+    
+    .variable-value {
+      font-size: 24px;
+      color: #ffffff;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <img class="logo" src="https://storage.googleapis.com/production-hostgator-brasil-v1-0-0/550/364550/v9bPQxy0/cfcafd65777e43dcacfbf8df13381dba" alt="Logo">
+  <h1>Leitura dos Potenciômetros</h1>
+  <div class="container">
+    <div>
+      <canvas class="gauge" id="tensaobtGauge" width="250" height="250"></canvas>
+      <div class="variable-value" id="tensaobtValue">Tensão BT (V): 0</div>
+    </div>
+    <div>
+      <canvas class="gauge" id="correnteGauge" width="250" height="250"></canvas>
+      <div class="variable-value" id="correnteValue">Corrente (A): 0</div>
+    </div>
+    <div>
+      <canvas class="gauge" id="potenciaGauge" width="250" height="250"></canvas>
+      <div class="variable-value" id="potenciaValue">Potência (W): 0</div>
+    </div>
+  </div>
+  
+  <div class="button-container">
+    <button class="update-button" onclick="updateGauges()">Atualizar Valores</button>
+  </div>
+  
+  <script>
+    // Função para desenhar o medidor
+    function drawGauge(canvasId, value, maxValue, label) {
+      var canvas = document.getElementById(canvasId);
+      var ctx = canvas.getContext("2d");
+      var centerX = canvas.width / 2;
+      var centerY = canvas.height / 2;
+      var radius = canvas.width / 2 - 20;
+      var startAngle = -Math.PI / 2;
+      var endAngle = startAngle + (Math.PI * 2) * (value / maxValue);
+      var percentage = ((value / maxValue) * 100).toFixed(1);
+      
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      
+      // Desenha o arco de fundo
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+      ctx.lineWidth = 30;
+      ctx.strokeStyle = "#444444";
+      ctx.stroke();
+      
+      // Desenha o arco do medidor atual
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, radius, startAngle, endAngle);
+      ctx.lineWidth = 30;
+      
+      // Altera a cor do primeiro medidor para verde
+      if (canvasId === "tensaobtGauge") {
+        ctx.strokeStyle = "#00FF00";
+      } else {
+        ctx.strokeStyle = "#FFC107";
+      }
+      
+      ctx.stroke();
+      
+      // Desenha a porcentagem do medidor
+      ctx.font = "28px Arial";
+      ctx.fillStyle = "#ffffff";
+      ctx.textAlign = "center";
+      ctx.fillText(percentage + "%", centerX, centerY);
+      
+      // Desenha a label do medidor
+      ctx.font = "14px Arial";
+      ctx.fillStyle = "#ffffff";
+      ctx.textAlign = "center";
+      ctx.fillText(label, centerX, centerY + 20);
+    }
+    
+    // Atualiza os valores dos medidores e das variáveis
+    function updateGauges() {
+      // Simula valores de leitura
+      var tensaobtValue = Math.random() * 220;
+      var correnteValue = Math.random() * 10;
+      var potenciaValue = tensaobtValue * correnteValue;
+      
+      // Atualiza os medidores
+      drawGauge("tensaobtGauge", tensaobtValue, 220, "Baterias (V)");
+      drawGauge("correnteGauge", correnteValue, 10, "Corrente (A)");
+      drawGauge("potenciaGauge", potenciaValue, 2200, "Potência (W)");
+      
+      // Atualiza os valores das variáveis
+      document.getElementById("tensaobtValue").textContent = "Tensão BT (V): " + tensaobtValue.toFixed(2);
+      document.getElementById("correnteValue").textContent = "Corrente (A): " + correnteValue.toFixed(2);
+      document.getElementById("potenciaValue").textContent = "Potência (W): " + potenciaValue.toFixed(2);
+    }
+  </script>
+</body>
+</html>
