@@ -69,7 +69,7 @@ tensaobateria = (tensaobateria * 29.4) / 4095.0;
 tensaoplaca = analogRead(tensaopl);
 tensaoplaca = (tensaoplaca * 42) / 4095.0;
 
-//coleta de dados com sensor ACS720
+//coleta de dados com sensor ACS712
 correnteplaca = analogRead(correntebt);
 correnteplaca = (correnteplaca*26.66*0.185)/4095.0;
 
